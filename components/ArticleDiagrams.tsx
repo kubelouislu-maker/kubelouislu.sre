@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flame, RefreshCcw, ShieldCheck, ArrowRight, User, Users, Wrench, Server, Database, Box, Layers } from 'lucide-react';
+import { Flame, ShieldCheck, ArrowRight, User, Users, Wrench, Server, Database, Box, Layers, Briefcase, Activity, LineChart } from 'lucide-react';
 import { useLanguage } from '../LanguageContext';
 
 const TEXT = {
@@ -29,41 +29,68 @@ const TEXT = {
       toolingDesc: "Context-aware tools bridging infra data to business logic",
       business: "Business Logic",
       businessSub: "Orders, Payments, Users"
+    },
+    breDef: {
+      center: "BRE",
+      role1: "Business Architect",
+      desc1: "Understands logical architecture & topology.",
+      role2: "Availability Engineer",
+      desc2: "Owns SLOs, Capacity & Disaster Recovery.",
+      role3: "Ops Analyst",
+      desc3: "Data-driven optimization via logs & metrics."
     }
   },
   zh: {
     sreTrap: {
-      oldWay: "传统模式",
-      firefighting: "救火循环陷阱",
-      cycleOld: ["告警", "修复", "重复"],
-      descOld: "SRE 陷入“琐事”陷阱。精力被动消耗，无暇顾及架构设计。",
-      newWay: "BRE 新模式",
-      prevention: "架构防御闭环",
-      cycleNew: ["设计", "护栏", "安全"],
-      descNew: "SRE 致力于“稳定性产品化”。系统实现自愈或从源头规避故障。"
+      oldWay: "传统 SRE 困境",
+      firefighting: "事后救火与响应",
+      cycleOld: ["告警", "应急", "重复"],
+      descOld: "聚焦于故障后的应急处置，缺乏认知盈余，难以从设计源头提高系统韧性。",
+      newWay: "BRE 转型目标",
+      prevention: "事前主动防御",
+      cycleNew: ["需求", "设计", "预防"],
+      descNew: "SRE 深入业务全流程，致力于“稳定性产品化”，让故障可预测、可预防。"
     },
     onePlusN: {
-      core: "\"1\" 核心 SRE",
+      core: "\"1\" 核心 SRE/BRE",
       coreRole: "稳定性产品经理",
-      deliver: "交付工具与标准",
-      tools: ["一键诊断", "SOP 平台", "风险防御"],
+      deliver: "交付产品化工具与 SOP",
+      tools: ["智能诊断", "应急平台", "监控运营"],
       partners: "\"N\" 合作伙伴",
-      partnersRole: "稳定性产品的用户"
+      partnersRole: "稳定性产品的运营者"
     },
     lastMile: {
       infra: "通用基础设施",
-      infraSub: "K8s, 云资源, 监控",
+      infraSub: "公有云, 容器, 中台",
       tooling: "“最后一公里”工具",
-      toolingDesc: "连接基建数据与业务逻辑的上下文感知桥梁",
+      toolingDesc: "连接通用基建与业务逻辑的桥梁 (如: 日志分析, 根因定位)",
       business: "业务逻辑",
-      businessSub: "订单, 支付, 用户体系"
+      businessSub: "交易, 支付, 核心流程"
+    },
+    breDef: {
+      center: "BRE 核心能力",
+      role1: "业务架构师思维",
+      desc1: "熟悉业务逻辑架构与部署拓扑，快速识别业务异常。",
+      role2: "可用性工程师思维",
+      desc2: "制定业务级 SLO/SLA、容量规划、容灾策略及演练。",
+      role3: "运营分析师思维",
+      desc3: "通过数据分析（监控/日志/反馈）推动系统持续改进。"
     }
   }
 };
 
+// Simplified helper to avoid TSX generic parsing issues
+function getLocalizedText(lang: string, key: string) {
+  const safeLang = (lang === 'en' || lang === 'zh') ? (lang as 'en' | 'zh') : 'zh';
+  // Use explicit casting to avoid type complexity in TSX
+  return (TEXT[safeLang] as any)[key];
+}
+
 export const SreTrapDiagram = () => {
   const { language } = useLanguage();
-  const t = TEXT[language].sreTrap;
+  const t = getLocalizedText(language, 'sreTrap');
+
+  if (!t) return null;
 
   return (
     <div className="bg-[#0b1221] border border-slate-800 rounded-lg p-6 my-8">
@@ -105,7 +132,9 @@ export const SreTrapDiagram = () => {
 
 export const OnePlusNDiagram = () => {
   const { language } = useLanguage();
-  const t = TEXT[language].onePlusN;
+  const t = getLocalizedText(language, 'onePlusN');
+
+  if (!t) return null;
 
   return (
     <div className="bg-[#0b1221] border border-slate-800 rounded-lg p-8 my-8 flex flex-col items-center relative overflow-hidden">
@@ -167,7 +196,9 @@ export const OnePlusNDiagram = () => {
 
 export const LastMileDiagram = () => {
   const { language } = useLanguage();
-  const t = TEXT[language].lastMile;
+  const t = getLocalizedText(language, 'lastMile');
+
+  if (!t) return null;
 
   return (
     <div className="bg-[#0b1221] border border-slate-800 rounded-lg p-6 my-8 overflow-x-auto">
@@ -205,3 +236,51 @@ export const LastMileDiagram = () => {
     </div>
   );
 };
+
+export const BreDefinitionDiagram = () => {
+    const { language } = useLanguage();
+    const t = getLocalizedText(language, 'breDef');
+  
+    if (!t) return null;
+  
+    const Card = ({ title, desc, icon, color }: any) => (
+      <div className={`bg-slate-900/50 border border-${color}-500/30 p-4 rounded-lg flex flex-col items-center text-center relative overflow-hidden group hover:bg-slate-900/80 transition-colors`}>
+        <div className={`absolute top-0 w-full h-1 bg-${color}-500/50`}></div>
+        <div className={`w-10 h-10 rounded-full bg-${color}-500/20 text-${color}-400 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform`}>
+          {icon}
+        </div>
+        <h4 className="text-sm font-bold text-slate-200 mb-2">{title}</h4>
+        <p className="text-[10px] text-slate-400 leading-tight">{desc}</p>
+      </div>
+    );
+  
+    return (
+      <div className="bg-[#0b1221] border border-slate-800 rounded-lg p-6 my-8 relative">
+         <div className="text-center mb-6">
+            <h3 className="text-xl font-bold text-white tracking-widest">{t.center}</h3>
+         </div>
+         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+             <Card 
+               title={t.role1} 
+               desc={t.desc1} 
+               icon={<Briefcase size={18} />} 
+               color="blue" 
+             />
+             <Card 
+               title={t.role2} 
+               desc={t.desc2} 
+               icon={<Activity size={18} />} 
+               color="green" 
+             />
+             <Card 
+               title={t.role3} 
+               desc={t.desc3} 
+               icon={<LineChart size={18} />} 
+               color="purple" 
+             />
+         </div>
+         {/* Connecting Lines (Desktop only) */}
+         <div className="hidden md:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[2px] bg-gradient-to-r from-transparent via-slate-700 to-transparent -z-0"></div>
+      </div>
+    );
+  };

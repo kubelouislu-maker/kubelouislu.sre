@@ -28,17 +28,18 @@ const MainApp: React.FC = () => {
       <nav className="fixed top-0 left-0 w-full z-50 bg-[#0b1221]/95 backdrop-blur-md border-b border-slate-800 h-14 flex justify-between items-center px-4 md:px-6 shadow-lg">
         
         {/* Brand */}
-        <div className="flex items-center gap-2 md:gap-4">
-          <div className="font-mono font-bold text-white tracking-tighter text-base md:text-lg flex items-center gap-2">
+        <div className="flex items-center gap-2 md:gap-4 overflow-hidden">
+          <div className="font-mono font-bold text-white tracking-tighter text-base md:text-lg flex items-center gap-2 shrink-0">
             <div className="w-6 h-6 bg-gradient-to-br from-sre-primary to-blue-600 rounded flex items-center justify-center text-xs text-black font-bold shrink-0">K</div>
-            <span className="truncate max-w-[150px] md:max-w-none">KubeLouisLu<span className="text-sre-primary">.SRE</span></span>
+            <span className="truncate max-w-[100px] md:max-w-none hidden sm:inline">KubeLouisLu<span className="text-sre-primary">.SRE</span></span>
+            <span className="sm:hidden">KL<span className="text-sre-primary">.SRE</span></span>
           </div>
           
           {/* Divider */}
-          <div className="h-6 w-[1px] bg-slate-700 hidden md:block"></div>
+          <div className="h-6 w-[1px] bg-slate-700 hidden md:block shrink-0"></div>
 
           {/* Breadcrumbs / Menu */}
-          <div className="hidden lg:flex gap-6 text-xs font-medium text-slate-400">
+          <div className="flex gap-4 md:gap-6 text-xs font-medium text-slate-400 overflow-x-auto no-scrollbar items-center whitespace-nowrap mask-linear-fade">
              <button 
                 onClick={() => handleTabChange('resume')}
                 className={`hover:text-white cursor-pointer transition-colors flex items-center gap-2 ${activeTab === 'resume' ? 'text-sre-primary font-bold' : ''}`}
@@ -67,7 +68,7 @@ const MainApp: React.FC = () => {
         </div>
 
         {/* Right Tools */}
-        <div className="flex items-center gap-2 md:gap-4">
+        <div className="flex items-center gap-2 md:gap-4 shrink-0 bg-[#0b1221] pl-2 shadow-[-10px_0_10px_#0b1221]">
           {/* Language Switcher */}
           <button 
             onClick={toggleLanguage}

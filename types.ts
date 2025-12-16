@@ -25,7 +25,7 @@ export interface SkillCategory {
 
 export interface ArticleDiagram {
   type: 'diagram';
-  id: 'sre-trap' | 'one-plus-n' | 'last-mile';
+  id: 'sre-trap' | 'one-plus-n' | 'last-mile' | 'bre-definition';
   caption?: string;
 }
 
