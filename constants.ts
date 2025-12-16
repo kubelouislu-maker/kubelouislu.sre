@@ -90,6 +90,25 @@ const EXPERIENCE_EN: Job[] = [
 
 const THINKING_EN: Article[] = [
   {
+    id: "0",
+    title: "Transformation to BRE: The Path to Business High Availability",
+    date: "2025-05-20",
+    readTime: "15 min read",
+    tags: ["Transformation", "BRE", "1+N Model"],
+    summary: "SREs must evolve from firefighters to Business Reliability Engineers (BRE). By implementing the '1+N' model and productizing the 'last mile' of infrastructure, we can liberate ourselves from toil to focus on architectural prevention.",
+    content: [
+      "The Reality Check: The 'Silent SRE' in Design Reviews. In my previous experience at Tencent, we implemented a policy where SREs were required to attend requirement reviews and technical assessment meetings. Ideally, this would prevent issues before code was written. However, the reality was stark: SREs rarely contributed meaningful insights. Why? It wasn't a lack of skill.",
+      "The Root Cause: Cognitive Overload. The SREs were physically present in the meeting, but their minds were elsewhere. They were worrying about a pending deployment, reacting to a flapping alert, or manually configuring a dashboard for a new service. Energy is conserved; if 90% of an SRE's bandwidth is consumed by operational toil (deployments, monitoring, firefighting), they literally do not have the cognitive surplus to think about architecture. To fix this, we must liberate them.",
+      { type: 'diagram', id: 'sre-trap', caption: 'The vicious cycle of toil vs. the virtuous cycle of prevention' },
+      "The Strategy: '1+N' Operational Model. We need to restructure the team. '1' represents the Core SRE (Elite/Architect), who acts as the Product Manager of Stability. 'N' represents Outsourcing Partners or Junior Operations, who are the 'Users' of our stability products. The goal is not to dump work on 'N', but to build tools that empower 'N' to handle 90% of the daily operations without escalating to '1'.",
+      { type: 'diagram', id: 'one-plus-n', caption: 'The 1+N Model: SRE as Tool Builders, Partners as Operators' },
+      "Productizing the 'Last Mile'. This is the most critical step. Central platform teams provide generic tools (like Kubernetes or basic Monitoring), but these are not enough for 'N' to be effective. SREs must build the 'Last Mile'—the specific bridge between generic infrastructure and business logic.",
+      "A Concrete Example: Instead of teaching an outsourced engineer how to query logs and trace IDs (which takes 30 mins per incident), an SRE builds a 'One-Click Order Diagnosis Tool'. The tool takes an Order ID, automatically checks the database latency, payment gateway status, and inventory service health, and outputs a simple conclusion: 'Inventory Service Timeout'.",
+      { type: 'diagram', id: 'last-mile', caption: 'Bridging the gap between Generic Infra and Business Logic' },
+      "The Transformation. By treating stability tools as products and empowering 'N' to use them, the '1' (SRE) is finally freed from the daily noise. Only then can they walk into a design review with a clear mind and say, 'This architecture has a single point of failure; here is how we redesign it.' This is the evolution from SRE to BRE (Business Reliability Engineer)."
+    ]
+  },
+  {
     id: "1",
     title: "Beyond 99.99%: The Philosophy of Reliability",
     date: "2024-12-15",
@@ -288,6 +307,25 @@ const EXPERIENCE_ZH: Job[] = [
 ];
 
 const THINKING_ZH: Article[] = [
+  {
+    id: "0",
+    title: "新时代下以业务高保为核心目标的 SRE 角色转型：BRE 的定义与路径探讨",
+    date: "2025-05-20",
+    readTime: "15 分钟阅读",
+    tags: ["SRE转型", "BRE", "1+N模式", "深度思考"],
+    summary: "传统 SRE 往往困于救火与监控，而真正的安全在于防患于未然。本文探讨 SRE 如何通过“1+N”模式转型为 BRE（业务稳定性工程师），通过产品化思维打通基础设施到业务的“最后一公里”，将日常运维交付给外包运营，从而解放核心生产力深入研发源头。",
+    content: [
+      "实战中的困境：需求评审会上的“失语者”。回顾之前在腾讯的经历，我们曾推行过一项制度，要求 SRE 必须参与业务需求评审和技术方案评估。初衷是美好的：在代码写下之前就规避风险。但现实很骨感，SRE 同学在会上往往提供不了太多有价值的思路，甚至全程沉默。为什么？难道是能力不够吗？",
+      "根本原因：认知带宽被琐事占满。SRE 同学虽然人坐在会议室里，但脑子里想的是：“刚才那个报警是不是又抖动了？”、“下午的服务发布脚本写好了吗？”、“昨天那个告警规则还没配完”。能量是守恒的，当 SRE 90% 的精力被部署服务、看问题、应急响应、配监控这些琐碎的运维动作填满时，他根本没有多余的“认知盈余”去思考架构的高可用。",
+      { type: 'diagram', id: 'sre-trap', caption: '运维琐事陷阱 vs 架构防御闭环' },
+      "破局之道：向 BRE (Business Reliability Engineer) 转型。要让 SRE 有时间去思考业务，就必须从繁杂的日常运维中解放出来。这需要我们从“运维人员”转型为“稳定性产品经理”。",
+      "核心战略：“1+N” 运作模式。“1” 代表 SRE 精英（架构师/产品经理），“N” 代表外包或合作伙伴同学。我们需要重新定义关系：外包同学不是来给我们“打杂”的，而是我们打造的“稳定性产品”的用户。我们的目标不是把活甩给 N，而是通过工具建设，让 N 能够低门槛地解决 90% 的日常问题。",
+      { type: 'diagram', id: 'one-plus-n', caption: '1+N 模式：SRE 负责造工具，伙伴负责用工具' },
+      "决胜点：打通“最后一公里”的产品化。中台团队提供了通用的 K8s 和监控平台，但这不够。SRE 必须建设“最后一公里”的工具——即通用设施与具体业务逻辑之间的桥梁。举个具体的例子：以前出问题，外包同学需要花30分钟去查日志、理链路；现在，SRE 开发一个“订单异常一键诊断工具”，输入订单号，工具自动分析数据库延迟、支付网关状态、库存服务水位，直接给出结论：“库存服务超时”。",
+      { type: 'diagram', id: 'last-mile', caption: '跨越通用基建与业务逻辑的“最后一公里”' },
+      "愿景：当这样的工具被开发出来，并交付给 N（外包同学）使用后，SRE 就真正被解放了。这时候，SRE 才有精力和底气走进需求评审会议室，在白板上画出架构图，自信地指出：“这个重试逻辑在极端场景下会导致雪崩，建议改为退避策略。”这才是 SRE 的终极价值：从“救火队员”进化为“防火专家”。"
+    ]
+  },
   {
     id: "1",
     title: "超越 99.99%：可靠性的哲学",

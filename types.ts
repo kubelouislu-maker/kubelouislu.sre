@@ -1,3 +1,4 @@
+
 export interface Metric {
   label: string;
   value: string | number;
@@ -22,6 +23,14 @@ export interface SkillCategory {
   items: string[];
 }
 
+export interface ArticleDiagram {
+  type: 'diagram';
+  id: 'sre-trap' | 'one-plus-n' | 'last-mile';
+  caption?: string;
+}
+
+export type ArticleContent = string | ArticleDiagram;
+
 export interface Article {
   id: string;
   title: string;
@@ -29,7 +38,7 @@ export interface Article {
   readTime: string;
   tags: string[];
   summary: string;
-  content: string[]; // Array of paragraphs for simplicity
+  content: ArticleContent[]; 
 }
 
 export interface LifeEvent {

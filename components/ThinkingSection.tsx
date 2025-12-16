@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Brain, Calendar, Clock, ArrowRight, Hash, Filter, X } from 'lucide-react';
+import { Brain, Calendar, Clock, ArrowRight, Hash, Filter, X, Star } from 'lucide-react';
 import { useLanguage } from '../LanguageContext';
 import { Article } from '../types';
 
@@ -80,66 +80,88 @@ const ThinkingSection: React.FC<ThinkingSectionProps> = ({ onArticleSelect }) =>
        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 min-h-[400px] content-start">
           <AnimatePresence mode="popLayout">
             {filteredArticles.length > 0 ? (
-                filteredArticles.map((article: Article) => (
-                    <motion.div
-                    layout
-                    key={article.id}
-                    onClick={() => onArticleSelect(article)}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    transition={{ duration: 0.3 }}
-                    className="bg-[#0b1221] border border-slate-800 rounded-lg p-6 hover:border-sre-primary/50 transition-all group hover:shadow-[0_0_20px_rgba(14,165,233,0.1)] flex flex-col relative overflow-hidden cursor-pointer h-full"
-                    >
-                        {/* Decorative glow */}
-                        <div className="absolute top-0 right-0 w-24 h-24 bg-sre-primary/5 rounded-bl-full -mr-12 -mt-12 group-hover:bg-sre-primary/10 transition-colors pointer-events-none"></div>
+                filteredArticles.map((article: Article) => {
+                    // Check if this is the featured pinned article (ID '0')
+                    const isFeatured = article.id === '0';
 
-                        {/* Meta */}
-                        <div className="flex justify-between items-center text-xs font-mono text-slate-500 mb-4 relative z-10">
-                        <div className="flex items-center gap-2">
-                            <Calendar size={12} />
-                            {article.date}
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <Clock size={12} />
-                            {article.readTime}
-                        </div>
-                        </div>
+                    return (
+                        <motion.div
+                        layout
+                        key={article.id}
+                        onClick={() => onArticleSelect(article)}
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.9 }}
+                        transition={{ duration: 0.3 }}
+                        className={`
+                            border rounded-lg p-6 transition-all group hover:shadow-[0_0_20px_rgba(14,165,233,0.1)] flex flex-col relative overflow-hidden cursor-pointer h-full
+                            ${isFeatured 
+                                ? 'col-span-1 md:col-span-2 lg:col-span-3 bg-gradient-to-br from-[#0b1221] to-[#11192e] border-sre-primary/40 hover:border-sre-primary' 
+                                : 'bg-[#0b1221] border-slate-800 hover:border-sre-primary/50'
+                            }
+                        `}
+                        >
+                            {/* Decorative glow / Badge for Featured */}
+                            {isFeatured ? (
+                                <>
+                                    <div className="absolute top-0 right-0 w-32 h-32 bg-sre-primary/10 rounded-bl-full -mr-16 -mt-16 group-hover:bg-sre-primary/20 transition-colors pointer-events-none blur-xl"></div>
+                                    <div className="absolute top-4 right-4 flex items-center gap-1 text-xs font-bold text-sre-warning bg-sre-warning/10 px-2 py-1 rounded border border-sre-warning/20">
+                                        <Star size={12} fill="currentColor" /> FEATURED_THOUGHT
+                                    </div>
+                                </>
+                            ) : (
+                                <div className="absolute top-0 right-0 w-24 h-24 bg-sre-primary/5 rounded-bl-full -mr-12 -mt-12 group-hover:bg-sre-primary/10 transition-colors pointer-events-none"></div>
+                            )}
 
-                        {/* Title */}
-                        <h3 className="text-xl font-bold text-slate-200 mb-3 group-hover:text-sre-primary transition-colors relative z-10">
-                        {article.title}
-                        </h3>
+                            {/* Meta */}
+                            <div className="flex justify-between items-center text-xs font-mono text-slate-500 mb-4 relative z-10">
+                            <div className="flex items-center gap-4">
+                                <div className="flex items-center gap-2">
+                                    <Calendar size={12} />
+                                    {article.date}
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <Clock size={12} />
+                                    {article.readTime}
+                                </div>
+                            </div>
+                            </div>
 
-                        {/* Tags */}
-                        <div className="flex flex-wrap gap-2 mb-4 relative z-10">
-                        {article.tags.map((tag: string, i: number) => (
-                            <span 
-                                key={i} 
-                                className={`text-[10px] px-2 py-1 rounded border flex items-center gap-1 transition-colors
-                                    ${activeTag === tag 
-                                        ? 'bg-sre-primary/20 text-sre-primary border-sre-primary/50' 
-                                        : 'bg-slate-900 text-slate-400 border-slate-800'
-                                    }`}
-                            >
-                                <Hash size={10} /> {tag}
+                            {/* Title */}
+                            <h3 className={`font-bold text-slate-200 mb-4 group-hover:text-sre-primary transition-colors relative z-10 ${isFeatured ? 'text-2xl md:text-4xl max-w-4xl leading-tight' : 'text-xl'}`}>
+                            {article.title}
+                            </h3>
+
+                            {/* Tags */}
+                            <div className="flex flex-wrap gap-2 mb-4 relative z-10">
+                            {article.tags.map((tag: string, i: number) => (
+                                <span 
+                                    key={i} 
+                                    className={`text-[10px] px-2 py-1 rounded border flex items-center gap-1 transition-colors
+                                        ${activeTag === tag 
+                                            ? 'bg-sre-primary/20 text-sre-primary border-sre-primary/50' 
+                                            : 'bg-slate-900 text-slate-400 border-slate-800'
+                                        }`}
+                                >
+                                    <Hash size={10} /> {tag}
+                                </span>
+                            ))}
+                            </div>
+
+                            {/* Summary */}
+                            <p className={`text-slate-400 leading-relaxed mb-6 flex-grow relative z-10 border-l border-slate-800 pl-3 ${isFeatured ? 'text-base md:text-lg max-w-4xl' : 'text-sm'}`}>
+                            {article.summary}
+                            </p>
+
+                            {/* Link */}
+                            <div className="mt-auto pt-4 border-t border-slate-800/50 flex justify-end relative z-10">
+                            <span className="text-xs font-mono text-sre-primary flex items-center gap-1 opacity-50 group-hover:opacity-100 transition-opacity">
+                                READ_FULL_ENTRY <ArrowRight size={12} />
                             </span>
-                        ))}
-                        </div>
-
-                        {/* Summary */}
-                        <p className="text-slate-400 text-sm leading-relaxed mb-6 flex-grow relative z-10 border-l border-slate-800 pl-3">
-                        {article.summary}
-                        </p>
-
-                        {/* Link */}
-                        <div className="mt-auto pt-4 border-t border-slate-800/50 flex justify-end relative z-10">
-                        <span className="text-xs font-mono text-sre-primary flex items-center gap-1 opacity-50 group-hover:opacity-100 transition-opacity">
-                            READ_ENTRY <ArrowRight size={12} />
-                        </span>
-                        </div>
-                    </motion.div>
-                ))
+                            </div>
+                        </motion.div>
+                    );
+                })
             ) : (
                 <motion.div 
                     initial={{ opacity: 0 }}

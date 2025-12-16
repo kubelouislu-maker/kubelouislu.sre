@@ -1,8 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Calendar, Clock, Hash, Brain } from 'lucide-react';
-import { Article } from '../types';
+import { Article, ArticleContent } from '../types';
 import { useLanguage } from '../LanguageContext';
+import { SreTrapDiagram, OnePlusNDiagram, LastMileDiagram } from './ArticleDiagrams';
 
 interface ArticleReaderProps {
   article: Article;
@@ -11,6 +12,36 @@ interface ArticleReaderProps {
 
 const ArticleReader: React.FC<ArticleReaderProps> = ({ article, onBack }) => {
   const { content } = useLanguage();
+
+  const renderContent = (block: ArticleContent, idx: number) => {
+    if (typeof block === 'string') {
+        return (
+            <p key={idx} className="text-slate-300 leading-8 mb-6 font-sans text-lg">
+              {block}
+            </p>
+        );
+    }
+
+    // It's a diagram object
+    let DiagramComponent = null;
+    switch (block.id) {
+        case 'sre-trap': DiagramComponent = SreTrapDiagram; break;
+        case 'one-plus-n': DiagramComponent = OnePlusNDiagram; break;
+        case 'last-mile': DiagramComponent = LastMileDiagram; break;
+        default: return null;
+    }
+
+    return (
+        <div key={idx} className="my-10">
+            <DiagramComponent />
+            {block.caption && (
+                <div className="text-center text-xs font-mono text-slate-500 mt-2 italic">
+                    Figure: {block.caption}
+                </div>
+            )}
+        </div>
+    );
+  };
 
   return (
     <motion.section 
@@ -61,11 +92,7 @@ const ArticleReader: React.FC<ArticleReaderProps> = ({ article, onBack }) => {
 
         {/* Article Body */}
         <article className="prose prose-invert prose-lg max-w-none">
-          {article.content.map((paragraph, idx) => (
-            <p key={idx} className="text-slate-300 leading-8 mb-6 font-sans text-lg">
-              {paragraph}
-            </p>
-          ))}
+          {article.content.map((block, idx) => renderContent(block, idx))}
         </article>
         
         {/* Footer */}
